@@ -57,11 +57,11 @@ class Rotor:
                 return int((self.init + step - 24) / 26 + 1)
         return 0
 
-    def forward(self, c, last=0, step=1, offset=0):
+    def forward(self, c, last=0, step=1):
         # print(self.init, c, alphabet[(ord(c) - ord("A") - last + self.init + step) % 26])
         return self.rotor[alphabet[(ord(c) - ord("A") - last + self.init + step) % 26]]
 
-    def rev_forward(self, c, last=0, step=1, offset=0):
-        # print(c, alphabet[(ord(c) - ord("A") + step - offset) % 26])
+    def rev_forward(self, c, last=0, step=1):
+        # print(c, alphabet[(ord(c) - ord("A") - last + self.init + step) % 26])
         return alphabet[(ord(self.rev_rotor[alphabet[(ord(c) - ord("A") - last + self.init + step) % 26]]) - ord("A")) % 26]
 
