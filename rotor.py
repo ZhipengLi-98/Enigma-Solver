@@ -42,23 +42,26 @@ class Rotor:
     def check(self, step):
         if self.index == 0:
             if self.init < ord("Q") - ord("A") + 1 and self.init + step > ord("Q") - ord("A"):
-                return 1
+                return int((self.init + step - 16) / 26 + 1)
         elif self.index == 1:
             if self.init < 5 and self.init + step > 4:
-                return 1
+                return int((self.init + step - 4) / 26 + 1)
         elif self.index == 2:
-            if self.init < 28 and self.init + step > 27:
-                return 1
+            if self.init < 22 and self.init + step > 21:
+                return int((self.init + step - 21) / 26 + 1)
         elif self.index == 3:
             if self.init < 10 and self.init + step > 9:
-                return 1
+                return int((self.init + step - 9) / 26 + 1)
         elif self.index == 4:
-            if self.init < 32 and self.init + step > 31:
-                return 1
+            if self.init < 25 and self.init + step > 24:
+                return int((self.init + step - 24) / 26 + 1)
         return 0
 
-    def forward(self, c, step=1):
-        return self.rotor[alphabet[(ord(c) - ord("A") + step) % 26]]
+    def forward(self, c, last=0, step=1, offset=0):
+        # print(self.init, c, alphabet[(ord(c) - ord("A") - last + self.init + step) % 26])
+        return self.rotor[alphabet[(ord(c) - ord("A") - last + self.init + step) % 26]]
 
-    def rev_forward(self, c, step=1):
-        return alphabet[(ord(self.rev_rotor[c]) - ord("A") - step) % 26]
+    def rev_forward(self, c, last=0, step=1, offset=0):
+        # print(c, alphabet[(ord(c) - ord("A") + step - offset) % 26])
+        return alphabet[(ord(self.rev_rotor[alphabet[(ord(c) - ord("A") - last + self.init + step) % 26]]) - ord("A")) % 26]
+
