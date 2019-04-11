@@ -23,7 +23,7 @@ V	Z	B	R	G	I	T	Y	U	P	S	D	N	H	L	X	A	W	M	J	Q	O	F	E	C	K
 
 
 class Rotor:
-    def __init__(self, index, next, init, rotor, rev_rotor):
+    def __init__(self, index, init, rotor, rev_rotor):
         self.index = index
         if index == 0:
             self.ultimate = "Q"
@@ -35,7 +35,6 @@ class Rotor:
             self.ultimate = "J"
         elif index == 4:
             self.ultimate = "Z"
-        self.next = next
         self.init = init
         self.rotor = rotor
         self.rev_rotor = rev_rotor
@@ -58,15 +57,8 @@ class Rotor:
                 return 1
         return 0
 
-    def forward(self, step=1):
-        temp = copy.deepcopy(self.rotor)
-        for i in range(26):
-            temp[alphabet[i]] = self.rotor[alphabet[(i + step) % 26]]
-        return temp
+    def forward(self, c, step=1):
+        return self.rotor[alphabet[(ord(c) - ord("A") + step) % 26]]
 
-    def rev_forward(self, step=1):
-        temp = copy.deepcopy(self.rev_rotor)
-        for i in range(26):
-            temp[self.rotor[alphabet[(i + step) % 26]]] = alphabet[i]
-        return temp
-
+    def rev_forward(self, c, step=1):
+        return alphabet[(ord(self.rev_rotor[c]) - ord("A") - step) % 26]

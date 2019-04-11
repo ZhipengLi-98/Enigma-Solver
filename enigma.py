@@ -19,17 +19,34 @@ class Enigma:
         final = ""
         for i in range(len(message)):
             passPlugs = self.plugs[message[i]]
-            passFir = self.first.forward(step=i + 1)[passPlugs]
+            passFir = self.first.forward(passPlugs, step=i + 1)
             stepTwo = self.first.check(i + 1)
             stepThi = self.second.check(stepTwo)
-            passSec = self.second.forward(step=stepTwo)[passFir]
-            passThi = self.third.forward(step=stepThi)[passSec]
+            passSec = self.second.forward(passFir, step=stepTwo)
+            passThi = self.third.forward(passSec, step=stepThi)
             passRev = self.reverse[passThi]
-            revThi = self.third.rev_forward(step=stepThi)[passRev]
-            revSec = self.second.rev_forward(step=stepTwo)[revThi]
-            revFir = self.first.rev_forward(step=i + 1)[revSec]
+            revThi = self.third.rev_forward(passRev, step=stepThi)
+            revSec = self.second.rev_forward(revThi, step=stepTwo)
+            revFir = self.first.rev_forward(revSec, step=i + 1)
             final += self.plugs[revFir]
-            # print(i, stepTwo, stepThi, self.plugs[revFir])
-            # print(message[i], passPlugs, passFir, passSec, passThi, passRev, revThi, revSec, revFir)
+            print(i, stepTwo, stepThi, self.plugs[revFir])
+            print(message[i], passPlugs, passFir, passSec, passThi, passRev, revThi, revSec, revFir)
+
+        return final
+
+    def convert_char(self, c, step):
+        passPlugs = self.plugs[c]
+        passFir = self.first.forward(passPlugs, step=step + 1)
+        stepTwo = self.first.check(step + 1)
+        stepThi = self.second.check(stepTwo)
+        passSec = self.second.forward(passFir, step=stepTwo)
+        passThi = self.third.forward(passSec, step=stepThi)
+        passRev = self.reverse[passThi]
+        revThi = self.third.rev_forward(passRev, step=stepThi)
+        revSec = self.second.rev_forward(revThi, step=stepTwo)
+        revFir = self.first.rev_forward(revSec, step=step + 1)
+        final = self.plugs[revFir]
+        # print(i, stepTwo, stepThi, self.plugs[revFir])
+        # print(message[i], passPlugs, passFir, passSec, passThi, passRev, revThi, revSec, revFir)
 
         return final
